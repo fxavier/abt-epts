@@ -37,3 +37,48 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
+
+class Provincia(models.Model):
+    name = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.name
+
+class Distrito(models.Model):
+    """Model definition for District."""
+
+    # TODO: Define fields here
+    name = models.CharField(max_length=100)
+    provincia = models.ForeignKey('Provincia', on_delete=models.CASCADE)
+   
+    def __str__(self):
+        """Unicode representation of District."""
+        return self.name
+
+class UnidadeSanitaria(models.Model):
+    """Model definition for HealthFacility."""
+    id = models.CharField(max_length=255, primary_key=True)
+    name = models.CharField(max_length=255)
+    # openmrs_name = models.CharField(max_length=255, null=True, blank=True)
+    distrito = models.ForeignKey('Distrito', on_delete=models.CASCADE)
+
+    class Meta:
+        """Meta definition for HealthFacility."""
+
+        verbose_name = 'Unidade Sanitaria'
+        verbose_name_plural = 'Unidades Sanitarias'
+
+    def __str__(self):
+        """Unicode representation of HealthFacility."""
+        return self.name
+
+class Livro(models.Model):
+    tipo = models.CharField(max_length=100)
+    numero = models.IntegerField()
+    pagina = models.IntegerField()  
+    linha = models.IntegerField()
+    
+    def __str__(self):
+        return f'{self.tipo} {self.numero}'
+    
+    
